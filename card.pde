@@ -6,13 +6,13 @@ class Card
   float x, y;
   float w = 69; // card images: 691px x 1056px.
   float h = 105;
-  boolean visible = true;
+  boolean faceUp = true;
   boolean pHand;
   
-  Card(int i, boolean inPlayerHand, boolean vis)
+  Card(int i, boolean inPlayerHand, boolean faUp)
   { 
     imageMode(CENTER);
-    visible = vis;
+    faceUp = faUp;
     id = i;
     place(inPlayerHand);
     pHand = inPlayerHand;
@@ -23,7 +23,7 @@ class Card
 
   void update()
   {
-    if(visible) imgsrc = loadImage(cardUrl.get(id));
+    if(faceUp) imgsrc = loadImage(cardUrl.get(id));
     else imgsrc = loadImage(cardUrl.get(0));
     image(imgsrc, x, y, w, h);
   }

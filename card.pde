@@ -1,71 +1,51 @@
 class Card
 {
-  PImage imgsrc;
-  int id, value;
-  char suit;
-  float x, y;
-  float w = 69; // card images: 691px x 1056px.
+  StringList url = new StringList("red_back.png", "AC.png", "AD.png", "AH.png", "AS.png", "2C.png", "2D.png", "2H.png", "2S.png", "3C.png", "3D.png", "3H.png", 
+    "3S.png", "4C.png", "4D.png", "4H.png", "4S.png", "5C.png", "5D.png", "5H.png", "5S.png", "6C.png", "6D.png", "6H.png", "6S.png", "7C.png", "7D.png", "7H.png", 
+    "7S.png", "8C.png", "8D.png", "8H.png", "8S.png", "9C.png", "9D.png", "9H.png", "9S.png", "10C.png", "10D.png", "10H.png", "10S.png", "JC.png", "JD.png", 
+    "JH.png", "JS.png", "QC.png", "QD.png", "QH.png", "QS.png", "KC.png", "KD.png", "KH.png", "KS.png"); // card file names from /data. 691px x 1056px.
+  PImage imgsrc; // Complex img variable.
+  int id, seq, value; 
+  float x, y; 
+  float w = 69; 
   float h = 105;
-  boolean faceUp = true;
-  boolean pHand;
-  
-  Card(int i, boolean inPlayerHand, boolean faUp)
+  boolean faceUp;
+  char suit;
+
+  Card(int _x, int _y, int _id, boolean _faceUp)
   { 
     imageMode(CENTER);
-    faceUp = faUp;
-    id = i;
-    place(inPlayerHand);
-    pHand = inPlayerHand;
+    x = _x;
+    y = _y;
+    id = _id;;
+    seq = drawNum;
+    value = getValue();
+    faceUp = _faceUp;
+    println("CARD ", x, y, id, drawNum, value);
     ++drawNum;
-    //debug();
-
   }
 
   void update()
   {
-    if(faceUp) imgsrc = loadImage(cardUrl.get(id));
-    else imgsrc = loadImage(cardUrl.get(0));
+    if (faceUp) imgsrc = loadImage(url.get(id));
+    else imgsrc = loadImage(url.get(0));
     image(imgsrc, x, y, w, h);
   }
-  void place(boolean inPlayerHand)
-  {
-    if(inPlayerHand)
-      {
-        ++pCardCount;
-        y = height - h * 1;
-        x = (width/5)*pCardCount;
-      }
-      else
-      {
-        ++dCardCount;
-        y = 0 + h * 1;
-        x = (width/5)*dCardCount;
-      }
-  }
+
   int getValue()
   {
     //LIST:  C>D>H>S  CARDBACK-A-2-3-4-5-6-7-8-9-10-J-Q-K
     if     (id > 0  && id <= 4)  return 11;
-    else if(id > 4  && id <= 8)  return 2;
-    else if(id > 8  && id <= 12) return 3;
-    else if(id > 12 && id <= 16) return 4;
-    else if(id > 16 && id <= 20) return 5;
-    else if(id > 20 && id <= 24) return 6;
-    else if(id > 24 && id <= 28) return 7;
-    else if(id > 28 && id <= 32) return 8;
-    else if(id > 32 && id <= 36) return 9;
-    else if(id > 36)             return 10;
+    else if (id > 4  && id <= 8)  return 2;
+    else if (id > 8  && id <= 12) return 3;
+    else if (id > 12 && id <= 16) return 4;
+    else if (id > 16 && id <= 20) return 5;
+    else if (id > 20 && id <= 24) return 6;
+    else if (id > 24 && id <= 28) return 7;
+    else if (id > 28 && id <= 32) return 8;
+    else if (id > 32 && id <= 36) return 9;
+    else if (id > 36)             return 10;
     println("CARD ID NOT IDENTIFIED: NO VALUE ASSIGNED.");
     return 0;
-  }
-  void testCall()
-  {
-  println("Succesful Method call.");
-  }
-  void debug()
-  {
-    x = round(width/3+drawNum*w);
-    y = round(height/2);
-    //println(drawNum + " object(s) created. New ID: " + id + " IMG: " + cardUrl.get(id));  
   }
 }

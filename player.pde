@@ -1,17 +1,14 @@
 class Player
 {
-  int handSize, points, bet, splitBet, betAmount, money;
-  boolean bust, betting, canBet, canHit, canStand, canSplit, canDouble, canIns;
+  int handSize, aces, points, splitPoints, bet, splitBet, betAmount, money;
+  boolean bust, canBet, canHit, canStand, canSplit, canDouble, canIns;
   Player(int _money)
   {
-    handSize = 0;
-    points = 0;
-    bet = 0;
     betAmount = 10;
     money = _money;
   }
 
-  void getCard()
+  void getCard(boolean split)
   { 
     int x, y;
     boolean faceUp = true;
@@ -21,25 +18,36 @@ class Player
     
     newCard(x, y, faceUp);
     
-    if(cards[drawNum-1].value == 11 && points + cards[drawNum-1].value > 21) points += 1;
-    else points += cards[drawNum-1].value;
+    if(cards[drawNum-1].value == 11) ++aces;
+    
+    if (!split) points += cards[drawNum-1].value;
+    else   splitPoints += cards[drawNum-1].value;
     
     bust();
   }
 
   void bust()
   {
-    if (points > 21)
+    if(points > 21 && aces > 0)
+    {
+      points -= 10;
+      --aces;
+      bust();
+    }
+    else if(points > 21)
     {
       bust = true;
+      getWinner();
+      println("BUST! press q to restart.");
     }
+    else bust = false;
   }
 
   void hit()
   {
     if (canHit && !bust)
     {
-      getCard();
+      getCard(false);
       advance = true;
       round = 2;
     }
@@ -56,40 +64,46 @@ class Player
 
   void doubleBet()
   {
-    if (canDouble && bet < money && !bust)
+    if (bet < money && canDouble && !bust)
     {
       money -= bet;
       bet   += bet;
-      getCard();
+      getCard(false);
       advance = true;
       round = 3;
     }
   }
 
-  void splitBet() // INCOMPLETE - MISSING DUAL POINT SETUP
+  void splitBet()
   {
     if (canSplit && !bust)
     {
-      getCard();
-      getCard();
+      cards[1].splitValue();
+      getCard(false);
+      getCard(true);
       splitBet = bet/2;
       bet = splitBet;
       advance = true;
       round = 3;
     }
   }
+  
+  void win(int pool)
+  {
+    money += pool*2;
+  }
 
   void bet()
   {
     if (canBet && !bust)
     {
-      if (key == '.')
+      if (key == '.' && bet < money)
       {
         bet += betAmount;
       }
-      if (key == ',')
+      if (key == ',' && bet > 0)
       {
-        bet += betAmount;
+        bet -= betAmount;
       }
       if (key == 'b')
       {

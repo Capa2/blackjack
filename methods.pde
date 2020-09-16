@@ -6,6 +6,7 @@ void keyPressed()
   if (key == 'v') player.splitBet();
   if (key == 'z') player.doubleBet();
   if (key == 'q') setup();
+  if (key == 'Q') player.money += 100;
 }
 
 void newCard(int x, int y, boolean faceUp)
@@ -13,7 +14,7 @@ void newCard(int x, int y, boolean faceUp)
   cards[drawNum] = new Card(x, y, shuffled.get(drawNum), faceUp);
 }
 
-void createLists()
+void shuffleCards()
 {
   shuffled = new IntList();
   for (int i = 1; i <= 52; ++i)
@@ -31,24 +32,92 @@ void drawCardGraphics()
   }
 }
 
-void ui() 
+void getWinner()
 {
-  rectMode(CENTER);
-  strokeWeight(1);
-  textSize(18);
-  textAlign(CENTER);
-  text("(x) Hit  (c) Stand  (d) Double Down", width/2, height-225+12);
-  text("(UP) +bet (DOWN) -bet  (q) Restart", width/2, height-200+12);
-  text("$" + player.money + "  Bet: " + player.bet + "  Hand: " + player.points, width/2, height-250+12);
+  if(!player.bust)
+  {
+    if(dealer.points > 21 || player.points > dealer.points)
+    {
+      player.win(player.bet);
+      println("You Won! ", player.points, " > ", dealer.points);
+    }
+    else
+    {
+      println("You Lost! ", player.points, " < ", dealer.points);
+    }
+  }
+  
+  if(!player.bust && player.splitPoints != 0)
+  {
+    if(dealer.points > 21 || player.splitPoints > dealer.points)
+    {
+      player.win(player.splitBet);
+      println("You Won! ", player.splitPoints, " > ", dealer.points);
+    }
+    else
+    {
+      println("You Lost! ", player.splitPoints, " < ", dealer.points);
+    }
+  }
+  
 }
 
-void bg()
+void gameStage()
 {
-  int[] whitish      = {166, 255, 214};
-  int[] lighterGreen = {126, 242, 184};
-  int[] lightGreen   = {93, 179, 136};
-  int[] pokerGreen   = {53, 101, 77};
-  int[] green        = {60, 115, 87};
-  int[] darkGreen    = {40, 77, 58};
-  background(pokerGreen[0], pokerGreen[1], pokerGreen[2]);
+  if (round == 0)
+  {
+    println("Round 0");
+    drawNum = 0;
+    player.handSize = 0;
+    dealer.handSize = 0;
+    player.aces = 0;
+    player.points = 0;
+    dealer.points = 0;
+    player.splitPoints = 0;
+    player.bet = 0;
+    player.splitBet = 0;
+    player.canBet = true;
+    player.bust = false;
+  }
+  if (round == 1)
+  {
+    println("Round 1");
+    player.getCard(false);
+    player.getCard(false);
+    dealer.getCard();
+    dealer.getCard();
+    
+    if(dealer.points == 21 && player.points != 21) round = 3;
+    else if(player.points == 21) getWinner();
+    
+    player.canBet = false;
+    player.canHit = true;
+    player.canStand = true;
+    player.canSplit = true;
+    player.canDouble = true;
+    player.canIns = true;
+  }
+  if (round == 2)
+  {
+    println("Round 2");
+    player.canBet = false;
+    player.canHit = true;
+    player.canStand = true;
+    player.canSplit = false;
+    player.canDouble = false;
+    player.canIns = false;
+  }
+  if (round == 3)
+  {
+    println("Round 3");
+    dealer.revealCard();
+    player.canBet = false;
+    player.canHit = false;
+    player.canStand = false;
+    player.canSplit = false;
+    player.canDouble = false;
+    player.canIns = false;
+    dealer.hitStand();
+    getWinner();
+  }
 }

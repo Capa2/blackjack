@@ -10,7 +10,7 @@ void setup()
 void draw()
 {
   ui();
-  if(advance)
+  if(advance && !player.bust)
   {
     gameStage();
     advance = false;

@@ -38,6 +38,9 @@ class Player
     {
       bust = true;
       getWinner();
+      screen = "BUST!";
+      if(player.money > 0) screen += " press q to start a new round."
+      else screen += " Get out of here!"
       println("BUST! press q to restart.");
     }
     else bust = false;
@@ -76,7 +79,7 @@ class Player
 
   void splitBet()
   {
-    if (canSplit && !bust)
+    if (canSplit && !bust && cards[0].value == cards[1].value)
     {
       cards[1].splitValue();
       getCard(false);

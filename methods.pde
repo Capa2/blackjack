@@ -40,9 +40,11 @@ void getWinner()
     {
       player.win(player.bet);
       println("You Won! ", player.points, " > ", dealer.points);
+      screen = "You Won $ " + player.bet + "!";
     }
     else
     {
+      screen = "You Lost. You have $" + player.money + " left.";
       println("You Lost! ", player.points, " < ", dealer.points);
     }
   }
@@ -52,10 +54,12 @@ void getWinner()
     if(dealer.points > 21 || player.splitPoints > dealer.points)
     {
       player.win(player.splitBet);
+      screen += " You Won $ " + player.bet + "!";
       println("You Won! ", player.splitPoints, " > ", dealer.points);
     }
     else
     {
+      screen += " You lost your Split bet.";
       println("You Lost! ", player.splitPoints, " < ", dealer.points);
     }
   }
@@ -66,6 +70,7 @@ void gameStage()
 {
   if (round == 0)
   {
+    screen = "Make your bet.";
     println("Round 0");
     drawNum = 0;
     player.handSize = 0;
@@ -82,6 +87,7 @@ void gameStage()
   }
   if (round == 1)
   {
+    screen = "Hit / Stand / Split / Double Down.";
     println("Round 1");
     player.getCard(false);
     player.getCard(false);
@@ -100,6 +106,7 @@ void gameStage()
   }
   if (round == 2)
   {
+    screen = "Hit / Stand.";
     println("Round 2");
     player.canBet = false;
     player.canHit = true;
@@ -110,6 +117,7 @@ void gameStage()
   }
   if (round == 3)
   {
+    screen = "Dealer's Turn...";
     println("Round 3");
     dealer.revealCard();
     player.canBet = false;

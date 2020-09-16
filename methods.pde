@@ -77,6 +77,7 @@ void gameStage()
     player.bet = 0;
     player.splitBet = 0;
     player.canBet = true;
+    player.canHit = false;
     player.bust = false;
   }
   if (round == 1)

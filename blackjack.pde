@@ -1,11 +1,10 @@
 void setup()
 {
-  size(420, 640);
+  size(640, 640);
   frameRate(60);
   shuffleCards();
   round = 0;
   gameStage();
-  
 }
 
 void draw()

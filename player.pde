@@ -13,8 +13,8 @@ class Player
     int x, y;
     boolean faceUp = true;
     ++handSize;
-    y = height-75;
-    x = 75*handSize;
+    y = height-190;
+    x = 80*handSize;
     
     newCard(x, y, faceUp);
     
@@ -97,15 +97,15 @@ class Player
   {
     if (canBet && !bust)
     {
-      if (key == '.' && bet < money)
+      if (keyCode == SHIFT && bet < money)
       {
         bet += betAmount;
       }
-      if (key == ',' && bet > 0)
+      if (keyCode == CONTROL && bet > 0)
       {
         bet -= betAmount;
       }
-      if (key == 'b')
+      if (key == 'b' && bet > 0)
       {
         money -= bet;
         advance = true;

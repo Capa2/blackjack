@@ -21,9 +21,9 @@ class Card
     seq = drawNum;
     value = getValue();
     faceUp = _faceUp;
-    //println("CARD ID: ", id, " VALUE: ", value);
+    if(megaDebug) println("CARD ID: ", id, " VALUE: ", value);
     ++drawNum;
-    //println("DrawNum " + (drawNum-1) + " -> " + drawNum + ".");
+    if(debug) println("DrawNum " + (drawNum-1) + " -> " + drawNum + ".");
   }
 
   void update()
@@ -52,7 +52,7 @@ class Card
     else if (id > 28 && id <= 32) return 8;
     else if (id > 32 && id <= 36) return 9;
     else if (id > 36)             return 10;
-    println("CARD ID NOT IDENTIFIED: NO VALUE ASSIGNED.");
+    println("CARD ID UNKOWN: NO VALUE ASSIGNED.");
     return 0;
   }
 }

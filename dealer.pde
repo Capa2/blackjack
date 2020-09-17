@@ -35,7 +35,7 @@ class Dealer
   {
     if (points < 17)
     {
-      println("Dealer drew a card.");
+      if(debug) println("Dealer drew a card.");
       getCard();
       hitStand();
     }

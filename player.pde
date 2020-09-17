@@ -41,7 +41,7 @@ class Player
       screen = "BUST!";
       if(player.money > 0) screen += " press q to start a new round.";
       else screen += " Get out of here!";
-      println("BUST! press q to restart.");
+      if(debug) println("BUST! press q to restart.");
     }
     else bust = false;
   }

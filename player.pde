@@ -67,7 +67,7 @@ class Player
 
   void doubleBet()
   {
-    if (bet < money && canDouble && !bust)
+    if (bet <= money && canDouble && !bust)
     {
       money -= bet;
       bet   += bet;
